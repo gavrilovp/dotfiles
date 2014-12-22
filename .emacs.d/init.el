@@ -49,6 +49,29 @@
   :config (autopair-global-mode)
 )
 
+;; linum
+(use-package linum-relative
+  :ensure t
+  :config
+  (progn
+    (global-linum-mode t)
+    ;; Auto change between relative and absolute styles
+    (add-hook 'post-command-hook
+              (lambda ()
+                (cond ((evil-insert-state-p)
+                       (progn
+                         (setq linum-format 'dynamic)
+                         (linum-schedule)
+                         ))
+                      ((evil-normal-state-p)
+                       (progn
+                         (setq linum-format 'linum-relative)
+                         (linum-schedule)
+                         ))
+                      )))
+  )
+)
+
 ;; helm
 (use-package helm
   :ensure t
