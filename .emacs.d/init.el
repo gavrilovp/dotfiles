@@ -43,6 +43,12 @@
   :config (global-auto-complete-mode t)
 )
 
+;; autopair
+(use-package autopair
+  :ensure t
+  :config (autopair-global-mode)
+)
+
 ;; helm
 (use-package helm
   :ensure t
@@ -63,7 +69,7 @@
 
 ;; python autocompletion
 (use-package jedi
-  :ensure jedi
+  :ensure t
   :commands jedi:setup
   :init
   (progn
@@ -75,8 +81,21 @@
 ;; python
 (use-package python
   :defer t
-  :config
-  (add-hook 'python-mode-hook 'jedi:setup)
+  :config 
+  (progn
+    (add-hook 'python-mode-hook 'jedi:setup)
+    (setq 
+     python-shell-interpreter "/usr/local/bin/ipython"
+     python-shell-interpreter-args ""
+     python-shell-prompt-regexp "In \\[[0-9]+\\]: "
+     python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: "
+     python-shell-completion-setup-code
+     "from IPython.core.completerlib import module_completion"
+     python-shell-completion-module-string-code
+     "';'.join(module_completion('''%s'''))\n"
+     python-shell-completion-string-code
+     "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")    
+  )
 )
 
 ;; newline-and-indent on RET
