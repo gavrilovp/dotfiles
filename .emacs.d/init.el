@@ -1,4 +1,5 @@
 (add-to-list 'load-path "~/.emacs.d/use-package")
+
 ;; CL extensions
 (require 'cl)
 
@@ -37,17 +38,22 @@
     )
   )
 
+;; comments
+(use-package evil-nerd-commenter
+  :ensure t
+  )
+
 ;; auto-complete-mode
 (use-package auto-complete
   :ensure t
   :config (global-auto-complete-mode t)
-)
+  )
 
 ;; autopair
 (use-package autopair
   :ensure t
   :config (autopair-global-mode)
-)
+  )
 
 ;; linum
 (use-package linum-relative
@@ -69,14 +75,14 @@
                          (linum-schedule)
                          ))
                       )))
+    )
   )
-)
 
 ;; helm
 (use-package helm
   :ensure t
   :config (global-set-key (kbd "M-x") 'helm-M-x)
-)
+  )
 
 ;; helm-projectile
 (use-package helm-projectile
@@ -87,8 +93,8 @@
     (setq projectile-completion-system 'helm)
     (global-set-key (kbd "C-c h") 'helm-projectile)
     (helm-projectile-on)
+    )
   )
-)
 
 ;; python autocompletion
 (use-package jedi
@@ -98,8 +104,8 @@
   (progn
     (setq jedi:setup-keys t)
     (setq jedi:complete-on-dot t)
+    )
   )
-)
 
 ;; python
 (use-package python
@@ -118,9 +124,21 @@
      "';'.join(module_completion('''%s'''))\n"
      python-shell-completion-string-code
      "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")    
+    )
   )
-)
 
 ;; newline-and-indent on RET
 (add-hook 'lisp-mode-hook
-  '(lambda () (local-set-key (kbd "RET") 'newline-and-indent)))
+          '(lambda () (local-set-key (kbd "RET") 'newline-and-indent)))
+
+;; latexmk
+(use-package auctex-latexmk
+  :ensure t
+  )
+
+;; tex
+(add-hook 'tex-mode-hook
+          (lambda ()
+            (auctex-latexmk-setup)
+            (auto-fill-mode)
+            ))
