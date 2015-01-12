@@ -142,3 +142,17 @@
             (auctex-latexmk-setup)
             (auto-fill-mode)
             ))
+
+;; haskell
+(use-package ghc
+	:ensure t
+	:commands ghc-init
+	)
+
+(use-package haskell-mode
+  :ensure t
+  :config (progn
+            (add-hook 'haskell-mode-hook 'haskell-indentation-mode)
+            (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+            )
+  )
