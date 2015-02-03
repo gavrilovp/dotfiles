@@ -107,6 +107,15 @@
     )
   )
 
+;; elpy
+(use-package elpy
+  :ensure t
+  :init
+  (progn
+    (elpy-enable)
+    )
+  )
+
 ;; python
 (use-package python
   :defer t
