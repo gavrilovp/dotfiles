@@ -16,7 +16,8 @@
      (output-dvi "xdvi")
      (output-pdf "zathura")
      (output-html "xdg-open"))))
- '(fill-column 80)
+ '(desktop-save-mode 1)
+ '(column-number-mode t)
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
  '(package-archives
