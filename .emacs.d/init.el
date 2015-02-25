@@ -113,8 +113,10 @@
   :init
   (progn
     (elpy-enable)
+    (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
     )
   )
+
 
 ;; python
 (use-package python
