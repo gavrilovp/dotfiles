@@ -16,10 +16,13 @@
      (output-dvi "xdvi")
      (output-pdf "zathura")
      (output-html "xdg-open"))))
- '(desktop-save-mode 1)
  '(column-number-mode t)
+ '(desktop-save-mode 1)
+ '(haskell-font-lock-symbols t)
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
+ '(org-agenda-files
+   (list "~/yandex-disk/org/home.org" "~/yandex-disk/org/work.org" "~/yandex-disk/org/university.org"))
  '(package-archives
    (quote
     (("mepla" . "http://melpa.milkbox.net/packages/")
@@ -28,5 +31,4 @@
  '(python-indent-offset 4)
  '(standard-indent 2)
  '(tab-width 2)
- '(menu-bar-mode nil)
  '(tool-bar-mode nil))
