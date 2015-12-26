@@ -12,7 +12,6 @@
 ;; package.el
 (package-initialize)
 
-;; eVIl options
 (use-package evil
   :ensure t
   :config
@@ -35,27 +34,30 @@
     (define-key evil-motion-state-map (kbd "C-j") 'evil-scroll-page-down)
     (define-key evil-motion-state-map (kbd "C-k") 'evil-scroll-page-up)
     (define-key evil-motion-state-map (kbd "C-l") 'evil-end-of-line)
+
+    (add-hook 'neotree-mode-hook
+      (lambda ()
+        (define-key evil-normal-state-local-map (kbd "TAB") 'neotree-enter)
+        (define-key evil-normal-state-local-map (kbd "SPC") 'neotree-enter)
+        (define-key evil-normal-state-local-map (kbd "q") 'neotree-hide)
+        (define-key evil-normal-state-local-map (kbd "RET") 'neotree-enter)))
     )
   )
 
-;; comments
 (use-package evil-nerd-commenter
   :ensure t
   )
 
-;; auto-complete-mode
 (use-package auto-complete
   :ensure t
   :config (global-auto-complete-mode t)
   )
 
-;; autopair
 (use-package autopair
   :ensure t
   :config (autopair-global-mode)
   )
 
-;; linum
 (use-package linum-relative
   :ensure t
   :config
@@ -78,13 +80,26 @@
     )
   )
 
-;; helm
+(use-package neotree
+  :ensure t
+  :config
+  (progn
+    (global-set-key [f2] 'neotree-toggle)
+    (defadvice helm-projectile-find-file
+        (after helm-projectile-find-file activate)
+      (neotree-dir projectile-project-root))
+    )
+  )
+
 (use-package helm
   :ensure t
   :config (global-set-key (kbd "M-x") 'helm-M-x)
   )
 
-;; helm-projectile
+(use-package projectile
+  :ensure t
+  )
+
 (use-package helm-projectile
   :ensure t
   :config 
@@ -96,15 +111,26 @@
     )
   )
 
-;; python autocompletion
-(use-package jedi
+(defun helm-gtags-add-keys ()
+  (local-set-key (kbd "M-g") 'helm-gtags-dwim)
+  (local-set-key (kbd "M-b") 'helm-gtags-pop-stack)
+  )
+
+(use-package helm-gtags
   :ensure t
-  :commands jedi:setup
-  :init
+  :config
   (progn
-    (setq jedi:setup-keys t)
-    (setq jedi:complete-on-dot t)
+    (add-hook 'c-mode-hook 'helm-gtags-mode)
+    (add-hook 'helm-gtags-mode-hook 'helm-gtags-add-keys)
+    (setq helm-gtags-auto-update t)
     )
+  )
+
+(defun elpy-add-keys ()
+  (local-set-key (kbd "M-g") 'elpy-goto-definition)
+  (local-set-key (kbd "M-b") 'pop-tag-mark)
+  (local-set-key [f9] 'elpy-test)
+  (local-set-key [f5] 'recompile)
   )
 
 ;; elpy
@@ -114,47 +140,27 @@
   (progn
     (elpy-enable)
     (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+    (setq elpy-rpc-ignored-buffer-size 100)
     )
-  )
-
-
-;; python
-(use-package python
-  :defer t
-  :config 
-  (progn
-    (add-hook 'python-mode-hook 'jedi:setup)
-    (setq 
-     python-shell-interpreter "/usr/local/bin/ipython"
-     python-shell-interpreter-args ""
-     python-shell-prompt-regexp "In \\[[0-9]+\\]: "
-     python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: "
-     python-shell-completion-setup-code
-     "from IPython.core.completerlib import module_completion"
-     python-shell-completion-module-string-code
-     "';'.join(module_completion('''%s'''))\n"
-     python-shell-completion-string-code
-     "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")    
-    )
+  :config
+  (add-hook 'elpy-mode-hook 'elpy-add-keys)
   )
 
 ;; newline-and-indent on RET
 (add-hook 'lisp-mode-hook
           '(lambda () (local-set-key (kbd "RET") 'newline-and-indent)))
 
-;; latexmk
 (use-package auctex-latexmk
   :ensure t
   )
 
-;; tex
 (add-hook 'tex-mode-hook
           (lambda ()
             (auctex-latexmk-setup)
             (auto-fill-mode)
+            ;; (local-set-key [f9] )
             ))
 
-;; solarized
 (use-package solarized-theme
   :ensure t
   :config
@@ -174,3 +180,26 @@
             (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
             )
   )
+
+(use-package sql-indent
+  :ensure sql-indent
+  :defer t
+  )
+
+(use-package sql
+  :defer t
+  :config
+  (progn
+    (sql-set-product 'oracle)
+    (add-hook 'sql-mode-hook 'sql-highlight-oracle-keywords)
+    (require 'sql-indent)
+    )
+  )
+
+;; for testing
+(setenv "PYTHONPATH" "/home/pavel/balance/utils")
+(setenv "YANDEX_XML_CONFIG" "/home/pavel/balance/configs/balance-dev.cfg")
+(pyvenv-activate "/home/pavel/balance/env")
+
+(setq org-latex-pdf-process '("xelatex -interaction nonstopmode %f"
+                              "xelatex -interaction nonstopmode %f"))

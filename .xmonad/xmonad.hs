@@ -54,4 +54,5 @@ myManageHook = composeAll
   , className =? "Klipper" --> doFloat
   , isFullscreen --> doFullFloat
   , kdeOverride --> doFloat
+  , className =? "plasmashell" --> doFloat
   ]
