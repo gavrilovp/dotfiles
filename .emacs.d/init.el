@@ -133,41 +133,49 @@
   (local-set-key [f5] 'recompile)
   )
 
-;; elpy
 (use-package elpy
   :ensure t
   :init
   (progn
     (elpy-enable)
-    (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+    (elpy-use-ipython)
     (setq elpy-rpc-ignored-buffer-size 100)
     )
   :config
   (add-hook 'elpy-mode-hook 'elpy-add-keys)
   )
 
+(add-hook 'c-mode-hook
+          (lambda ()
+            (local-set-key [f5] 'compile))
+  )
+
 ;; newline-and-indent on RET
 (add-hook 'lisp-mode-hook
           '(lambda () (local-set-key (kbd "RET") 'newline-and-indent)))
 
-(use-package auctex-latexmk
-  :ensure t
+(use-package tex
+  :ensure auctex
+  :config (progn
+            (setq TeX-parse-self t
+                  TeX-auto-save t
+                  TeX-save-query nil)
+            )
   )
 
-(add-hook 'tex-mode-hook
-          (lambda ()
+(use-package auctex-latexmk
+  :ensure t
+  :config (progn
             (auctex-latexmk-setup)
-            (auto-fill-mode)
-            ;; (local-set-key [f9] )
-            ))
+            (add-hook 'LaTeX-mode-hook (lambda () (setq TeX-command-default "LatexMk")))
+            )
+  )
 
 (use-package solarized-theme
   :ensure t
-  :config
-  (load-theme 'solarized-dark t)
+  :config (load-theme 'solarized-dark)
   )
 
-;; haskell
 (use-package ghc
 	:ensure t
 	:commands ghc-init
@@ -181,19 +189,26 @@
             )
   )
 
-(use-package sql-indent
-  :ensure sql-indent
-  :defer t
-  )
-
 (use-package sql
   :defer t
   :config
   (progn
     (sql-set-product 'oracle)
     (add-hook 'sql-mode-hook 'sql-highlight-oracle-keywords)
-    (require 'sql-indent)
     )
+  )
+
+(add-hook 'sql-interactive-mode-hook
+          (lambda ()
+            (toggle-truncate-lines t)))
+
+(use-package powerline
+  :ensure t
+  :config (powerline-default-theme)
+  )
+
+(use-package ess
+  :ensure t
   )
 
 ;; for testing
@@ -201,5 +216,4 @@
 (setenv "YANDEX_XML_CONFIG" "/home/pavel/balance/configs/balance-dev.cfg")
 (pyvenv-activate "/home/pavel/balance/env")
 
-(setq org-latex-pdf-process '("xelatex -interaction nonstopmode %f"
-                              "xelatex -interaction nonstopmode %f"))
+(put 'erase-buffer 'disabled nil)
