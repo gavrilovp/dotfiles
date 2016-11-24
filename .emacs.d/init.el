@@ -48,6 +48,15 @@
   :ensure t
   )
 
+(use-package magit
+  :ensure t
+  :config (global-set-key (kbd "C-x g") 'magit-status)
+  )
+
+(use-package monky
+  :ensure t
+  )
+
 (use-package auto-complete
   :ensure t
   :config (global-auto-complete-mode t)
@@ -93,7 +102,11 @@
 
 (use-package helm
   :ensure t
-  :config (global-set-key (kbd "M-x") 'helm-M-x)
+  :config
+  (progn
+    (global-set-key (kbd "M-x") 'helm-M-x)
+    (global-set-key (kbd "C-x C-b") 'helm-buffers-list)
+    )     
   )
 
 (use-package projectile
@@ -142,7 +155,11 @@
     (setq elpy-rpc-ignored-buffer-size 100)
     )
   :config
-  (add-hook 'elpy-mode-hook 'elpy-add-keys)
+  (progn
+    (add-hook 'elpy-mode-hook 'hs-minor-mode)
+    (add-hook 'elpy-mode-hook 'elpy-add-keys)
+    (add-hook 'elpy-mode-hook 'which-function-mode)
+    )
   )
 
 (add-hook 'c-mode-hook
@@ -211,9 +228,34 @@
   :ensure t
   )
 
+(use-package docker
+  :ensure t
+  )
+
+(use-package dockerfile-mode
+  :ensure t
+  :config (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode))
+  )
+
+(use-package nginx-mode
+  :ensure t
+  :config (add-to-list 'auto-mode-alist '("/nginx/sites-\\(?:available\\|enabled\\)/" . nginx-mode))
+  )
+
 ;; for testing
 (setenv "PYTHONPATH" "/home/pavel/balance/utils")
 (setenv "YANDEX_XML_CONFIG" "/home/pavel/balance/configs/balance-dev.cfg")
 (pyvenv-activate "/home/pavel/balance/env")
 
+
+(require 'pymacs)
+(pymacs-load "ropemacs" "rope-")
+
 (put 'erase-buffer 'disabled nil)
+
+
+(global-auto-revert-mode) 
+
+(use-package realgud
+  :ensure t
+  )
