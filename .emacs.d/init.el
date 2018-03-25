@@ -1,13 +1,16 @@
-(add-to-list 'load-path "~/.emacs.d/use-package")
-
 ;; CL extensions
 (require 'cl)
 
-;; for simplifying .emacs
-(require 'use-package)
-
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
+
+(require 'package)
+
+(package-initialize)
+
+(unless (package-installed-p 'use-package)
+	(package-refresh-contents)
+	(package-install 'use-package))
 
 ;; package.el
 (package-initialize)
@@ -151,7 +154,8 @@
   :init
   (progn
     (elpy-enable)
-    (elpy-use-ipython)
+    (setq python-shell-interpreter "ipython"
+      python-shell-interpreter-args "-i --simple-prompt")
     (setq elpy-rpc-ignored-buffer-size 100)
     )
   :config
@@ -247,9 +251,6 @@
 (setenv "YANDEX_XML_CONFIG" "/home/pavel/balance/configs/balance-dev.cfg")
 (pyvenv-activate "/home/pavel/balance/env")
 
-
-(require 'pymacs)
-(pymacs-load "ropemacs" "rope-")
 
 (put 'erase-buffer 'disabled nil)
 

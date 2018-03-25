@@ -32,8 +32,7 @@
    (list "~/yandex-disk/org/home.org" "~/yandex-disk/org/work.org" "~/yandex-disk/org/studying.org"))
  '(package-archives
    (quote
-    (("mepla" . "http://melpa.milkbox.net/packages/")
-     ("marmalade" . "http://marmalade-repo.org/packages/")
+    (("melpa" . "http://melpa.org/packages/")
      ("gnu" . "http://elpa.gnu.org/packages/"))))
  '(python-indent-offset 4)
  '(pyvenv-activate nil)
