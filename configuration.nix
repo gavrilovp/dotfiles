@@ -4,7 +4,7 @@
   imports =
     [ 
       <nixos-hardware/lenovo/thinkpad/x1/yoga/7th-gen>
-      ./hardware-configuration.nix
+      /etc/nixos/hardware-configuration.nix
     ];
 
   boot.loader.systemd-boot.enable = true;
