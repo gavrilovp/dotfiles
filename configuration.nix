@@ -57,6 +57,8 @@
       slack
       tdesktop
       teams
+
+      libreoffice
     ];
   };
 
