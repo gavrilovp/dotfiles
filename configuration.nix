@@ -48,11 +48,15 @@
 
       notion-app-enhanced
 
+      # development
       git
-      cyclonedds
-
+      vscode
       docker-compose
 
+      # network
+      openvpn
+
+      # communications
       thunderbird
       slack
       tdesktop
