@@ -37,13 +37,30 @@
   services.printing.enable = true;
 
   sound.enable = true;
-  hardware.pulseaudio.enable = true;
+  hardware.pulseaudio = {
+    enable = true;
+    package = pkgs.pulseaudioFull;
+    extraConfig = ''
+      load-module module-switch-on-connect
+    '';
+  };
+
   hardware.bluetooth.enable = true;
+  hardware.bluetooth.settings = {
+    General = {
+      Enable = "Control,Gateway,Headset,Media,Sink,Socket,Source";
+    };
+  };
+  systemd.services.bluetooth.serviceConfig.ExecStart = [
+    ""
+    "${pkgs.bluez}/libexec/bluetooth/bluetoothd -f /etc/bluetooth/main.conf"
+  ];
 
   users.users.pavel = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "docker" ];
+    extraGroups = [ "wheel" "docker" "audio" ];
     packages = with pkgs; [
+      chromium
       firefox
 
       notion-app-enhanced
@@ -63,6 +80,32 @@
       teams
 
       libreoffice
+      (texlive.combine {
+        inherit (texlive)
+          collection-basic
+          metafont
+          xits
+          collection-bibtexextra
+          collection-binextra
+          collection-context
+          collection-formatsextra
+          collection-fontutils
+          #collection-genericextra
+          #collection-genericrecommended
+          collection-langcyrillic
+          collection-langenglish
+          collection-latex
+          collection-latexextra
+          collection-latexrecommended
+          #collection-mathextra
+          collection-pictures
+          #collection-plainextra
+          collection-pstricks
+          #collection-science
+          collection-xetex;
+      })
+
+      pavucontrol
     ];
   };
 
