@@ -10,13 +10,14 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+  networking.networkmanager.enable = true;
 
   time.timeZone = "Europe/Moscow";
 
 
   nixpkgs.config = {
     allowUnfree = true;
+    permittedInsecurePackages = [ "teams-1.5.00.23861" ];
   };
 
   services = {
@@ -29,8 +30,17 @@
 
       libinput.touchpad.naturalScrolling = true;
 
-      displayManager.sddm.enable = true;
-      desktopManager.plasma5.enable = true;
+      desktopManager = {
+        xterm.enable = false;
+        xfce = {
+          enable = true;
+          noDesktop = true;
+          enableXfwm = false;
+        };
+      };
+      displayManager.defaultSession = "xfce";
+
+      windowManager.i3.enable = true;
     };
   };
   
@@ -56,6 +66,10 @@
     "${pkgs.bluez}/libexec/bluetooth/bluetoothd -f /etc/bluetooth/main.conf"
   ];
 
+  users = {
+    defaultUserShell = pkgs.zsh;
+  };
+
   users.users.pavel = {
     isNormalUser = true;
     extraGroups = [ "wheel" "docker" "audio" ];
@@ -64,6 +78,9 @@
       firefox
 
       notion-app-enhanced
+
+      # runtimes
+      python3
 
       # development
       git
@@ -106,7 +123,24 @@
       })
 
       pavucontrol
+
+      vlc
+      unetbootin
+      rambox-pro
     ];
+  };
+
+  programs.zsh = {
+    enable = true;
+    enableCompletion = true;
+    autosuggestions.enable = true;
+    syntaxHighlighting.enable = true;
+
+    ohMyZsh = {
+      enable = true;
+      plugins = [ "git" ];
+      theme = "robbyrussell";
+    };
   };
 
   environment.systemPackages = with pkgs; [
@@ -116,7 +150,6 @@
 
   virtualisation.docker.enable = true;
 
-  system.stateVersion = "23.05"; # Did you read the comment?
-
+  system.stateVersion = "23.05";
 }
 
