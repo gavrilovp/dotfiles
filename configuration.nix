@@ -46,6 +46,9 @@
   
   services.printing.enable = true;
 
+  services.netbird.enable = true;
+  services.resolved.enable = true;
+
   sound.enable = true;
   hardware.pulseaudio = {
     enable = true;
@@ -65,6 +68,7 @@
     ""
     "${pkgs.bluez}/libexec/bluetooth/bluetoothd -f /etc/bluetooth/main.conf"
   ];
+  services.blueman.enable = true;
 
   users = {
     defaultUserShell = pkgs.zsh;
@@ -89,6 +93,7 @@
 
       # network
       openvpn
+      netbird-ui
 
       # communications
       thunderbird
