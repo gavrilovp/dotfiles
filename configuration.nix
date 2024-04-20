@@ -129,6 +129,8 @@
 
       pavucontrol
 
+      zathura
+
       vlc
       unetbootin
       rambox-pro
