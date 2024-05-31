@@ -134,6 +134,9 @@
       vlc
       unetbootin
       rambox-pro
+
+      unzip
+      unrar
     ];
   };
 
