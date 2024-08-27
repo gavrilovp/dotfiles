@@ -7,6 +7,10 @@
       /etc/nixos/hardware-configuration.nix
     ];
 
+  nixpkgs.config.allowUnfree = true;
+
+  nixpkgs.hostPlatform = "x86_64-linux";
+
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
@@ -14,21 +18,15 @@
 
   time.timeZone = "Europe/Moscow";
 
-
-  nixpkgs.config = {
-    allowUnfree = true;
-    permittedInsecurePackages = [ "teams-1.5.00.23861" ];
-  };
-
   services = {
+    libinput.touchpad.naturalScrolling = true;
+    displayManager.defaultSession = "xfce";
+
     xserver = {
       enable = true;
 
-      layout = "us,ru";
-
-      xkbOptions = "grp:caps_toggle";
-
-      libinput.touchpad.naturalScrolling = true;
+      xkb.layout = "us,ru";
+      xkb.options = "grp:caps_toggle";
 
       desktopManager = {
         xterm.enable = false;
@@ -38,7 +36,6 @@
           enableXfwm = false;
         };
       };
-      displayManager.defaultSession = "xfce";
 
       windowManager.i3.enable = true;
     };
@@ -81,25 +78,24 @@
       chromium
       firefox
 
-      notion-app-enhanced
-
       # runtimes
       python3
 
       # development
       git
-      vscode
       docker-compose
 
       # network
       openvpn
       netbird-ui
 
+      darktable
+
       # communications
       thunderbird
-      slack
       tdesktop
-      teams
+      teams-for-linux
+      zoom-us
 
       libreoffice
       (texlive.combine {
@@ -126,6 +122,7 @@
           #collection-science
           collection-xetex;
       })
+      projectlibre
 
       pavucontrol
 
@@ -154,12 +151,13 @@
   };
 
   environment.systemPackages = with pkgs; [
+    emacs
     vim 
     wget
   ];
 
   virtualisation.docker.enable = true;
 
-  system.stateVersion = "23.05";
+  system.stateVersion = "24.05";
 }
 
