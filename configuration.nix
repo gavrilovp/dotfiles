@@ -134,6 +134,8 @@
 
       unzip
       unrar
+
+      yandex-disk
     ];
   };
 
