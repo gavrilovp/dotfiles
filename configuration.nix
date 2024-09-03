@@ -20,7 +20,6 @@
 
   services = {
     libinput.touchpad.naturalScrolling = true;
-    displayManager.defaultSession = "xfce";
 
     xserver = {
       enable = true;
