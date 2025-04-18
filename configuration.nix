@@ -83,6 +83,8 @@
       # development
       git
       docker-compose
+      vscode
+      mqttx
 
       # network
       openvpn
@@ -131,6 +133,7 @@
       unetbootin
       rambox-pro
 
+      zip
       unzip
       unrar
 
